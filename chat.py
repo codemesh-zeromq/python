@@ -3,7 +3,10 @@ import zmq
 import readline
 import multiprocessing
 import sys
+from fabric.colors import blue, cyan, green, magenta, red, white, yellow
+import random
 
+colors = [blue, cyan, green, magenta, red, white, yellow]
 port = 7315
 ctx = zmq.Context()
 
@@ -23,13 +26,16 @@ def read_messages(first_3_octets):
     return _read_messages
 
 
+def random_color(msg):
+    return random.choice(colors)(msg)
+
 #pub, bind to 7315, send on enter
 def send_messages():
     socket = ctx.socket(zmq.PUB)
     socket.bind('tcp://*:7315')
     while True:
         msg = input()
-        socket.send_string(msg)
+        socket.send_string(random_color(msg))
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
