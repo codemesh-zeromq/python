@@ -13,6 +13,6 @@ def say_hello_and_read_reply(ip):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        raise ArgumentError('usage: hello_world_client.py SERVER_IP')
+        raise RuntimeError('usage: hello_world_client.py SERVER_IP')
     ip = sys.argv[1]
     say_hello_and_read_reply(ip)
