@@ -30,16 +30,17 @@ def random_color(msg):
     return random.choice(colors)(msg)
 
 #pub, bind to 7315, send on enter
-def send_messages():
+def send_messages(nickname):
     socket = ctx.socket(zmq.PUB)
     socket.bind('tcp://*:7315')
     while True:
         msg = input()
-        socket.send_string(random_color(msg))
+        if msg.strip():
+            socket.send_string('<{}> {}'.format(nickname, random_color(msg.strip())))
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 3:
         raise RuntimeError('usage: chat.py PARTIAL_IP')
     subscriber = multiprocessing.Process(target=read_messages(sys.argv[1]))
     subscriber.start()
-    send_messages()
+    send_messages(sys.argv[2])
